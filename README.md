@@ -18,7 +18,7 @@ The generator takes a random noise vector (latent space) and transforms it into 
 * **Input:** Latent vector of size 100.
 * **Layers:** Dense layer, followed by multiple **Conv2DTranspose** (Deconvolution) layers.
 * **Normalization:** Batch Normalization is used to stabilize training.
-* **Activation:** ReLU for hidden layers and **Tanh** for the output layer.
+* **Activation:** LeakyReLU for hidden layers and **Tanh** for the output layer.
 
 ### Discriminator
 The discriminator is a binary classifier that determines if a given image is real or fake.
@@ -27,10 +27,7 @@ The discriminator is a binary classifier that determines if a given image is rea
 * **Activation:** LeakyReLU for hidden layers and **Sigmoid** for the final output.
 * **Regularization:** Dropout layers to prevent the discriminator from overpowering the generator.
 
-## 📁 File Structure
-* `gans.ipynb`: The main Jupyter notebook containing data preprocessing, model definitions, training loops, and visualization of results.
-* `requirements.txt`: List of necessary Python libraries to run the project.
-* `README.md`: Project documentation.
+
 
 ## ⚙️ How to Run
 1. **Clone the repository:**
