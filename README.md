@@ -1,35 +1,34 @@
-# DCGAN for MNIST Digit Generation
+# 🎨 Conditional DCGAN (CDCGAN) for MNIST Digit Generation
 
-This project implements a **Deep Convolutional Generative Adversarial Network (DCGAN)** to generate handwritten digits using the classic **MNIST** dataset. It demonstrates the power of generative models in creating realistic synthetic data.
+![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
+![TensorFlow](https://img.shields.io/badge/Framework-TensorFlow%2FKeras-orange.svg)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-## 🚀 Project Overview
-The goal of this project is to train two neural networks—a **Generator** and a **Discriminator**—in a competitive setting. The generator learns to create realistic images of digits, while the discriminator learns to distinguish between real images from the dataset and fake ones produced by the generator.
+A Deep Convolutional Generative Adversarial Network extended with a conditional mechanism (CDCGAN). This model learns to generate highly realistic, specific handwritten digits (0-9) from the MNIST dataset by conditioning both the Generator and Discriminator on class labels.
 
-## 🛠️ Tech Stack
-* **Framework:** TensorFlow / Keras
-* **Architecture:** Convolutional Neural Networks (CNN)
-* **Dataset:** MNIST (60,000 grayscale images of digits 0-9)
-* **Optimization:** Adam Optimizer
+## 🚀 Key Features
+- **Controlled Generation:** Explicitly control the generated digit by providing a specific class label (0-9) along with the latent noise vector.
+- **Label Embedding:** Maps discrete class labels into dense 50-dimensional vectors to capture semantic class information before concatenating them with the feature maps.
+- **Advanced Architecture:** Replaces standard fully connected layers with Transposed Convolutions for upsampling and Strided Convolutions for feature extraction.
+- **Stable Adversarial Training:** Utilizes Batch Normalization, LeakyReLU activations, and Dropout regularization to prevent mode collapse and ensure stable convergence.
 
-## 🏗️ Model Architecture
+## 🧠 Architecture Overview
 
-### Generator
-The generator takes a random noise vector (latent space) and transforms it into a 28x28 grayscale image.
-* **Input:** Latent vector of size 100.
-* **Layers:** Dense layer, followed by multiple **Conv2DTranspose** (Deconvolution) layers.
-* **Normalization:** Batch Normalization is used to stabilize training.
-* **Activation:** LeakyReLU for hidden layers and **Tanh** for the output layer.
+### 1. Conditional Generator
+- **Inputs:** 100-dimensional Gaussian noise + 1-dimensional class label.
+- **Processing:** The label is embedded into a 50D space and concatenated with the noise. It is then projected via a Dense layer and reshaped into a `7x7x256` spatial tensor.
+- **Upsampling:** Three progressive `Conv2DTranspose` layers upsample the feature maps to a final `28x28x1` image.
+- **Activation:** `tanh` output layer to produce normalized pixel values [-1, 1].
 
-### Discriminator
-The discriminator is a binary classifier that determines if a given image is real or fake.
-* **Input:** 28x28x1 image.
-* **Layers:** **Conv2D** layers with strided convolutions.
-* **Activation:** LeakyReLU for hidden layers and **Sigmoid** for the final output.
-* **Regularization:** Dropout layers to prevent the discriminator from overpowering the generator.
+### 2. Conditional Discriminator
+- **Inputs:** `28x28x1` image + 1-dimensional class label.
+- **Feature Extraction:** Extracts image features using two strided `Conv2D` layers.
+- **Conditioning:** The spatial features are flattened and concatenated with the embedded class label to evaluate both image realism and label matching.
+- **Classification:** Passes through a dense layer with LeakyReLU and 0.3 Dropout before the final binary classification using logits.
 
+## ⚙️ Quick Start
 
-
-## ⚙️ How to Run
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/ziadalaa7/DCGAN-mnist-dataset.git](https://github.com/ziadalaa7/DCGAN-mnist-dataset.git)
+**1. Clone the repository:**
+```bash
+git clone [https://github.com/ziadalaa7/DCGAN-mnist-dataset.git](https://github.com/ziadalaa7/DCGAN-mnist-dataset.git)
+cd DCGAN-mnist-dataset
